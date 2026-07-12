@@ -46,10 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Third Party Apps
-    "rest_framework",
-    "rest_framework_simplejwt",
-
     # Project Apps
     "apps.accounts",
     "apps.organization",
@@ -62,6 +58,27 @@ INSTALLED_APPS = [
     # "apps.activity_logs",
     "apps.reports",
 ]
+
+# Optionally include third-party apps if they're importable in this environment
+try:
+    import importlib
+    importlib.import_module('rest_framework')
+    INSTALLED_APPS.insert(6, 'rest_framework')
+except Exception:
+    # rest_framework not available; skip
+    pass
+
+try:
+    import importlib
+    importlib.import_module('rest_framework_simplejwt')
+    # place after rest_framework if present
+    try:
+        idx = INSTALLED_APPS.index('rest_framework')
+        INSTALLED_APPS.insert(idx + 1, 'rest_framework_simplejwt')
+    except ValueError:
+        INSTALLED_APPS.append('rest_framework_simplejwt')
+except Exception:
+    pass
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
