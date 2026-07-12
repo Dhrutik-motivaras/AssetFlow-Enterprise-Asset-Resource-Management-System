@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import api from '../services/api';
 import '../styles/Auth.css';
 
 /**
@@ -8,6 +10,7 @@ import '../styles/Auth.css';
  */
 function UserLogin() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [form, setForm] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
 
@@ -29,12 +32,34 @@ function UserLogin() {
     return Object.keys(next).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
-    // TODO: call login API (e.g. Axios POST)
-    navigate('/dashboard');
+    const res = await login(form.email, form.password);
+    if (res.success) {
+      navigate('/dashboard');
+    } else {
+      setErrors((prev) => ({ ...prev, login: res.error }));
+    }
+  };
+
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    const email = prompt("Enter your registered email address for password reset:");
+    if (!email || !email.trim()) return;
+
+    try {
+      const res = await api.post('accounts/forgot-password/', { email: email.trim() });
+      alert(res.data.detail);
+    } catch (err) {
+      const data = err.response?.data;
+      let errorMsg = "Failed to request password reset.";
+      if (data) {
+        errorMsg = data.detail || data.email?.[0] || errorMsg;
+      }
+      alert(errorMsg);
+    }
   };
 
   return (
@@ -66,7 +91,7 @@ function UserLogin() {
           <div className="form-group">
             <div className="password-row">
               <label htmlFor="password">Password</label>
-              <a className="forgot-link" href="#">Forgot Password?</a>
+              <a className="forgot-link" href="#" onClick={handleForgotPassword}>Forgot Password?</a>
             </div>
             <input
               id="password"
@@ -78,6 +103,8 @@ function UserLogin() {
             />
             {errors.password && <span className="error-text">{errors.password}</span>}
           </div>
+
+          {errors.login && <span className="error-text" style={{ textAlign: 'center' }}>{errors.login}</span>}
 
           <button className="auth-button" type="submit">Login</button>
 

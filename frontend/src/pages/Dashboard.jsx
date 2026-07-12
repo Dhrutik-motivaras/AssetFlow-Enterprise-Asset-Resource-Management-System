@@ -1,3 +1,4 @@
+import { useAuth } from '../context/AuthContext';
 import Sidebar from '../components/layout/Sidebar';
 import Header from '../components/layout/Header';
 import DashboardCard from '../components/dashboard/DashboardCard';
@@ -168,6 +169,8 @@ const upcomingReturns = [
 ];
 
 function Dashboard() {
+  const { user } = useAuth();
+
   return (
     <div className="dashboard-page">
       <Sidebar />
@@ -178,8 +181,8 @@ function Dashboard() {
           <section className="dashboard-welcome-card">
             <div>
               <p className="dashboard-welcome__greeting">Welcome back,</p>
-              <h1 className="dashboard-welcome__name">John Doe</h1>
-              <p className="dashboard-welcome__role">Asset Manager</p>
+              <h1 className="dashboard-welcome__name">{user?.full_name || 'User'}</h1>
+              <p className="dashboard-welcome__role">{user?.role || 'Employee'}</p>
               <p className="dashboard-welcome__description">
                 Manage assets, bookings, maintenance and organization efficiently.
               </p>
