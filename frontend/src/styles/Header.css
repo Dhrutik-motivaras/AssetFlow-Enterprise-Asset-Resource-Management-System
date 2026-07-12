@@ -139,28 +139,29 @@
 @media (max-width: 1024px) {
   .app-header {
     left: 0;
-    padding: 16px;
-    height: auto;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 14px;
+    padding: 0 16px;
+    height: 80px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .app-header__menu {
-    display: inline-flex;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.4rem;
+    margin-right: 8px;
   }
 
-  .app-header__search input {
-    width: 100%;
-  }
-}
-
-@media (max-width: 760px) {
-  .app-header {
-    gap: 12px;
+  .app-header__search,
+  .app-header__date,
+  .app-header__profile > div {
+    display: none;
   }
 
-  .app-header__date {
-    text-align: left;
+  .app-header__right {
+    gap: 10px;
   }
 }
