@@ -11,7 +11,14 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
+import os
+
+# Prefer python-decouple if available, otherwise fall back to os.environ
+try:
+    from decouple import config  # type: ignore
+except Exception:
+    def config(key, default=None):
+        return os.environ.get(key, default)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
