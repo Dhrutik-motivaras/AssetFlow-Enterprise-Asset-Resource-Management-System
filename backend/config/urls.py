@@ -15,9 +15,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/audits/', include('apps.audits.api.urls')),
 ]
+
+# Include audits API urls only if DRF is available
+try:
+    import importlib
+    importlib.import_module('rest_framework')
+    from django.urls import include, path as _path
+    urlpatterns += [
+        _path('api/audits/', include('apps.audits.api.urls')),
+    ]
+except Exception:
+    # DRF not available in this environment; skip including API urls
+    pass
