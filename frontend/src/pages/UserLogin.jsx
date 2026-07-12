@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Auth.css';
 
 /**
@@ -7,15 +7,14 @@ import '../styles/Auth.css';
  * Simple login form with required validation and navigation to register.
  */
 function UserLogin() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((p) => ({ ...p, [name]: value }));
     setErrors((p) => ({ ...p, [name]: '' }));
-    if (submitted) setSubmitted(false);
   };
 
   const validate = () => {
@@ -35,8 +34,7 @@ function UserLogin() {
     if (!validate()) return;
 
     // TODO: call login API (e.g. Axios POST)
-    setSubmitted(true);
-    setForm({ email: '', password: '' });
+    navigate('/dashboard');
   };
 
   return (
@@ -83,9 +81,7 @@ function UserLogin() {
 
           <button className="auth-button" type="submit">Login</button>
 
-          <Link to="/register" className="secondary-button" style={{display:'inline-block',textAlign:'center',textDecoration:'none'}}>Create Employee Account</Link>
-
-          {submitted && <p className="success-text">Login submitted successfully.</p>}
+          <Link to="/register" className="secondary-button">Create Employee Account</Link>
         </form>
 
         <div className="form-footer">

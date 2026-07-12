@@ -174,9 +174,11 @@ function UserRegister() {
           {successMessage && <p className="success-text">{successMessage}</p>}
         </form>
 
-        <p className="login-link muted">
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
+        <div className="form-footer">
+          <strong>Already have an account?</strong>
+          <p className="muted">Sign in to access your asset management dashboard.</p>
+          <Link to="/login" className="secondary-button">Login</Link>
+        </div>
       </div>
     </div>
   );

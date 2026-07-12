@@ -1,0 +1,139 @@
+.sidebar {
+  width: 280px;
+  min-height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 28px 24px;
+  background: var(--surface);
+  color: var(--text-h);
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-right: 1px solid var(--border);
+  z-index: 20;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.06);
+}
+
+.sidebar__logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #0d9488, #5eead4);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  color: #0f3b38;
+  text-decoration: none;
+  font-weight: 600;
+  background: #eaf8f4;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar__link:hover {
+  background: #d2f1eb;
+  color: #0b7b70;
+}
+
+.sidebar__link--active {
+  background: #b7e7df;
+  color: #07514b;
+}
+
+.sidebar--visible {
+  transform: translateX(0);
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar__logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #0d9488, #5eead4);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.sidebar__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.sidebar__toggle {
+  display: none;
+  align-self: flex-end;
+  color: #0f172a;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.sidebar__nav {
+  display: grid;
+  gap: 8px;
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  color: #0f3b38;
+  text-decoration: none;
+  font-weight: 600;
+  background: #eaf8f4;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar__link:hover {
+  background: #d2f1eb;
+  color: #0b7b70;
+}
+
+.sidebar__link--active {
+  background: #b7e7df;
+  color: #07514b;
+}
+
+.sidebar__icon {
+  font-size: 1.2rem;
+}
+
+.sidebar__label {
+  white-space: nowrap;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    position: absolute;
+    width: 100%;
+    max-width: 280px;
+    transform: translateX(-100%);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
+  }
+
+  .sidebar__toggle {
+    display: block;
+  }
+}
