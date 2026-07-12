@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import UserLogin from './pages/UserLogin';
 import UserRegister from './pages/UserRegister';
 import Dashboard from './pages/Dashboard';
@@ -11,87 +12,107 @@ import Audit from './pages/Audit';
 import Reports from './pages/Reports';
 import Notifications from './pages/Notifications';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+function Logout() {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    logout();
+    navigate('/login');
+  }, [logout, navigate]);
+
+  return (
+    <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>
+      <h2>Logging out...</h2>
+    </div>
+  );
+}
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/login" element={<UserLogin />} />
-        <Route path="/register" element={<UserRegister />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/organization"
-          element={
-            <ProtectedRoute>
-              <OrganizationSetup />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/assets"
-          element={
-            <ProtectedRoute>
-              <Assets />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/allocation"
-          element={
-            <ProtectedRoute>
-              <AllocationTransfer />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/booking"
-          element={
-            <ProtectedRoute>
-              <ResourceBooking />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/maintenance"
-          element={
-            <ProtectedRoute>
-              <Maintenance />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/audit"
-          element={
-            <ProtectedRoute>
-              <Audit />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/reports"
-          element={
-            <ProtectedRoute>
-              <Reports />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/notifications"
-          element={
-            <ProtectedRoute>
-              <Notifications />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<UserLogin />} />
+          <Route path="/register" element={<UserRegister />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organization"
+            element={
+              <ProtectedRoute>
+                <OrganizationSetup />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/assets"
+            element={
+              <ProtectedRoute>
+                <Assets />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/allocation"
+            element={
+              <ProtectedRoute>
+                <AllocationTransfer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/booking"
+            element={
+              <ProtectedRoute>
+                <ResourceBooking />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/maintenance"
+            element={
+              <ProtectedRoute>
+                <Maintenance />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/audit"
+            element={
+              <ProtectedRoute>
+                <Audit />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reports"
+            element={
+              <ProtectedRoute>
+                <Reports />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <Notifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }

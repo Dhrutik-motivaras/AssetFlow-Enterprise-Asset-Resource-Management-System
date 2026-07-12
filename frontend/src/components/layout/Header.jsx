@@ -1,11 +1,15 @@
+import { useAuth } from '../../context/AuthContext';
 import '../../styles/Header.css';
 
 function Header({ pageTitle = 'Dashboard', onMenuClick }) {
+  const { user } = useAuth();
   const today = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
   });
+
+  const avatarInitial = (user?.full_name || 'U').charAt(0).toUpperCase();
 
   return (
     <header className="app-header">
@@ -26,10 +30,10 @@ function Header({ pageTitle = 'Dashboard', onMenuClick }) {
           🔔
         </button>
         <div className="app-header__profile">
-          <span className="app-header__avatar">J</span>
+          <span className="app-header__avatar">{avatarInitial}</span>
           <div>
-            <div className="app-header__name">John Doe</div>
-            <div className="app-header__role">Asset Manager</div>
+            <div className="app-header__name">{user?.full_name || 'User'}</div>
+            <div className="app-header__role">{user?.role || 'Employee'}</div>
           </div>
         </div>
         <div className="app-header__date">{today}</div>

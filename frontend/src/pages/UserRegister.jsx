@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import '../styles/Auth.css';
 
 // Initial empty form state
@@ -18,6 +19,7 @@ const initialForm = {
  * Controlled inputs, client-side validation. Ready to connect to an API.
  */
 function UserRegister() {
+  const { register } = useAuth();
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
@@ -64,19 +66,28 @@ function UserRegister() {
     return Object.keys(next).length === 0;
   };
 
-  // Submit handler - stubbed to show message. Replace with API call.
-  const handleSubmit = (e) => {
+  // Submit handler - connects to registration API.
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccessMessage('');
+    setErrors({});
 
     if (!validate()) return;
 
-    // TODO: integrate with backend (Axios POST to /api/register/)
+    const res = await register({
+      fullName: form.fullName.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim(),
+      gender: form.gender,
+      password: form.password,
+    });
 
-    setSuccessMessage(
-      'Your employee account has been created successfully. An administrator will assign your department and role.'
-    );
-    setForm(initialForm);
+    if (res.success) {
+      setSuccessMessage(res.message);
+      setForm(initialForm);
+    } else {
+      setErrors({ server: res.error });
+    }
   };
 
   return (
@@ -166,6 +177,8 @@ function UserRegister() {
             />
             {errors.confirmPassword && <span className="error-text">{errors.confirmPassword}</span>}
           </div>
+
+          {errors.server && <p className="error-text" style={{ textAlign: 'center' }}>{errors.server}</p>}
 
           <button className="auth-button" type="submit">
             Create Employee Account
